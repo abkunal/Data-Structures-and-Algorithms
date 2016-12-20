@@ -106,6 +106,6 @@ def reverse_polish_notation( infix ):
 
 def test_stack():
 	stack1 = Stack()
-	stack.push( 10 )
-	print stack.size()
-	return stack.content()
+	stack1.push( 10 )
+	print( stack1.size() )
+	return stack1.content()
