@@ -6,7 +6,7 @@ class Stack( object ):
 	def __init__( self ):
 		""" Initialize the list storage which will contain the elements of the stack. """
 		self.storage = {}
-		self.MAX = 10
+		self.MAX = 100
 		self.position = -1
 
 	def push( self, value ):
@@ -42,9 +42,20 @@ class Stack( object ):
 		return self.position + 1
 
 
+def is_operator( char ):
+	""" Returns True if char is an operator, false otherwise """
+	if char == "+" or char == "-" or char == "*" or char == "/" or char == "^":
+		return True
+	return False
+
+
 # Infix to Postfix notation
 def reverse_polish_notation( infix ):
-	""" Convert an expression from infix to postfix """
+	""" 
+		Convert an expression from infix to postfix 
+		infix: a String containing a infix expression
+		Returns the postfix expression corresponding to the infix expression	
+	"""
 	stack = Stack()
 	stack.push( "(" )
 	infix += ")"
@@ -57,7 +68,7 @@ def reverse_polish_notation( infix ):
 			
 		# if an operator is encountered, repeatedly pop from stack operators
 		# with precedence equal to or greater than or equal to current operator
-		if ( char == "+" or char == "-" or char == "/" or char == "*" or char == "^" ):
+		if is_operator( char ):
 			
 			# if operator is + or -, pop until a left parenthesis is found
 			if ( char == "+" or char == "-" ):
@@ -104,6 +115,44 @@ def reverse_polish_notation( infix ):
 			
 	return postfix
 
+
+import operator
+# Evaluating a postfix expression
+def postfix_eval( postfix ):
+	""" 
+		Evaluates a postfix expression.
+		postfix: a String containing a postfix expression
+		Returns the solution of the postfix expression 
+	"""
+	stack = Stack()
+	postfix += ")"
+	
+	operators = {"+": operator.add, "-": operator.sub, "/": operator.floordiv,
+				 "*": operator.mul, "^": operator.pow}
+	
+	for char in postfix:
+		
+		if char == ")":
+			break
+		
+		print( stack.storage )
+		# if char is an operator, pop top two elements out of stack
+		# evaluate them with the operator and push the solution on the stack
+		if is_operator( char ):
+			if stack.size() >= 2:
+				a = int( stack.pop() )
+				b = int( stack.pop() )
+				c = operators[char]( b, a )
+				stack.push( c )
+			else:
+				raise( "Error: Wrong Postfix Expression" )
+		
+		# if an operand is encountered, push it onto stack
+		else:
+			stack.push( char )
+	
+	return stack.pop()
+
 # Testing of Stack Data Structure
 import unittest
 
@@ -129,21 +178,21 @@ class TestStack( unittest.TestCase ):
 		
 	def test_full_stack( self ):
 		stack = Stack()
-		# insert 10 elements in the stack
-		for i in range( 10 ):
+		# insert 100 elements in the stack
+		for i in range( 100 ):
 			stack.push( i )
 		
-		self.assertEqual( stack.size(), 10 )
+		self.assertEqual( stack.size(), 100 )
 		# empty the stack
-		for i in range( 10 ):
+		for i in range( 100 ):
 			stack.pop()
 		
 		self.assertEqual( stack.size(), 0 )
 		
 	def test_overflow_condition( self ):
 		stack = Stack()
-		# insert 11 elements as maximum size of stack is 10
-		for i in range( 10 ):
+		# insert 101 elements as maximum size of stack is 100
+		for i in range( 100 ):
 			stack.push( i )
 			
 		self.assertFalse( stack.push( 20 ) )
