@@ -19,6 +19,7 @@ class Stack( object ):
 			self.storage[self.position] = value
 			return True
 		else:
+			print( "Stack is Full!" )
 			return False
 
 	def pop( self ):
@@ -39,9 +40,6 @@ class Stack( object ):
 	def size( self ):
 		""" Returns the size of the stack """
 		return self.position + 1
-		
-	def content( self ):
-		return self.storage
 
 
 # Infix to Postfix notation
@@ -60,6 +58,8 @@ def reverse_polish_notation( infix ):
 		# if an operator is encountered, repeatedly pop from stack operators
 		# with precedence equal to or greater than or equal to current operator
 		if ( char == "+" or char == "-" or char == "/" or char == "*" or char == "^" ):
+			
+			# if operator is + or -, pop until a left parenthesis is found
 			if ( char == "+" or char == "-" ):
 				operator = stack.top()
 				while ( operator != "(" ):
@@ -104,8 +104,49 @@ def reverse_polish_notation( infix ):
 			
 	return postfix
 
-def test_stack():
-	stack1 = Stack()
-	stack1.push( 10 )
-	print( stack1.size() )
-	return stack1.content()
+# Testing of Stack Data Structure
+import unittest
+
+class TestStack( unittest.TestCase ):
+	""" Testing of method of stack data structure """
+	
+	def test_empty_stack( self ):
+		stack = Stack()
+		self.assertEqual( stack.size(), 0 )
+	
+	def test_underflow_condition( self ):
+		stack = Stack()
+		self.assertFalse( stack.pop() )
+	
+	def test_push_one_element( self ):
+		stack = Stack()
+		self.assertTrue( stack.push( 10 ) )
+
+	def test_pop_one_element( self ):
+		stack = Stack()
+		stack.push( 5 )
+		self.assertEqual( stack.pop(), 5 )
+		
+	def test_full_stack( self ):
+		stack = Stack()
+		# insert 10 elements in the stack
+		for i in range( 10 ):
+			stack.push( i )
+		
+		self.assertEqual( stack.size(), 10 )
+		# empty the stack
+		for i in range( 10 ):
+			stack.pop()
+		
+		self.assertEqual( stack.size(), 0 )
+		
+	def test_overflow_condition( self ):
+		stack = Stack()
+		# insert 11 elements as maximum size of stack is 10
+		for i in range( 10 ):
+			stack.push( i )
+			
+		self.assertFalse( stack.push( 20 ) )
+	
+if __name__ == '__main__':
+	unittest.main()
