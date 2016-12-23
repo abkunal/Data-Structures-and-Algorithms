@@ -109,5 +109,41 @@ class TestEfficientPeakFinder( unittest.TestCase ):
 		self.assertEqual( efficient_peak_finder( a, 0, 7 ), 3 )
 
 		
-if __name__ == '__main__':
-	unittest.main()
+#if __name__ == '__main__':
+#	unittest.main()
+
+""" Two Dimensional Version """
+
+
+a = [[140, 13, 12], [15, 9, 11], [16, 17, 19]]
+
+def peak_finder( array, rows, columns, low, high ):
+	"""
+		Uses divide and conquer approach to find a peak
+		rows, columns: number of rows and columns
+		low, high: range of indexes of columns which to search.
+		Returns a tuple (row, col) denoting the position of peak.
+	"""
+	
+	if rows == 0 or columns == 0:
+		return -1
+	
+	col_length = rows
+	m = int( ( low + high ) / 2 )
+	
+	elem = array[0][m]
+	maxi = 0
+	for i in range( rows ):
+		if array[maxi][m] < array[i][m]:
+			maxi = i
+			
+	if ( m == 0 or array[maxi][m] >= array[maxi][m-1] ) and ( m == columns-1 or array[maxi][m] >= array[maxi][m+1] ):
+		return (maxi, m)
+	elif ( m > 0 and array[maxi][m] < array[maxi][m-1]  ):
+		return peak_finder( array, rows, columns, low, m-1 )
+	else:
+		return peak_finder( array, rows, columns, m+1, high )
+	
+	
+	
+print( peak_finder( a, 3, 3, 0, 2 ) )
