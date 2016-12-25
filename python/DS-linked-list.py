@@ -194,6 +194,27 @@ class LinkedList( object ):
 			
 		return ll
 
+	def sort( self ):
+		""" Returns a sorted linked list based on ASCII values of the elements"""
+		# Make a list of all the elements in the linked list
+		# sort the list using Python's inbuilt sorting method
+		# construct a linked list from sorted list
+		array = []
+		start = self.head
+		
+		while start is not None:
+			array.append( start.value )
+			start = start.next
+			
+		array.sort()
+		
+		ll = LinkedList()
+		for elem in array:
+			ll.insert_at_end( elem )
+			
+		return ll
+		
+
 class DNode( Node ):
 	""" Node for doubly linked list """
 	def __init__( self, value ):
