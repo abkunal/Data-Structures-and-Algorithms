@@ -182,6 +182,17 @@ class LinkedList( object ):
 		""" returns the size of the linked list """
 		return self.length
 
+	def reverse( self ):
+		""" Returns the reverse of a linked list """
+		ll = LinkedList()
+		
+		start = self.head
+		
+		while start is not None:
+			ll.insert_at_beginning( start.value )
+			start = start.next
+			
+		return ll
 
 class DNode( Node ):
 	""" Node for doubly linked list """
@@ -389,6 +400,6 @@ def main( option ):
 		elif response == 9: i = 0
 		else:
 			print( "Invalid location" )
-			
-a = int( input( "Enter 1 for singly Linked list or any key for doubly linked list: " ) )
-main( a )
+#			
+#a = int( input( "Enter 1 for singly Linked list or any key for doubly linked list: " ) )
+#main( a )
