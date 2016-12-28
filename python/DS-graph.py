@@ -134,6 +134,32 @@ def DFS( G, start, end ):
 					
 	return False
 
+
+def printCurrentPath( path ):
+	""" Accepts a list of nodes and prints then values of the nodes """
+	print( "Path: ", end="" )
+	for node in path:
+		print( node.value, end=" " )
+	print()
+
+def ShortestDFS( G, start, end, path = [], shortest = None ):
+	""" Finds the shortest path from start to end using DFS """
+	path = path + [start]
+	
+	if start == end:
+		return path
+	else:
+		for vertex in G.graph[start]["edges"]:
+			#printCurrentPath( path )
+			if vertex not in path:
+				if shortest is None or len(path) < len(shortest):
+					newPath = ShortestDFS( G, vertex, end, path, shortest )
+					if newPath is not None:
+						shortest  = newPath
+						
+	return shortest
+
+	
 ## Simulation
 G = Graph()
 a1 = Node(1)
@@ -157,3 +183,4 @@ G.addEdge(a4,a5)
 
 print( BFS(G, a1, a6) )
 print( DFS(G, a1, a3) )
+printCurrentPath( ShortestDFS(G, a1, a3) )
