@@ -93,6 +93,16 @@ class doubly_linked_list( object ):
 	def size( self ):
 		return self._length
 		
+	def get_keys( self ):
+		""" Returns a list of keys of all the entries in the linked list """
+		cur = self._head
+		keys = []
+		
+		while cur is not None:
+			keys.append(cur.get_key())
+			cur = cur.next
+		return keys
+		
 	def insert_at_beginning( self, key, value ):
 		""" inserts the value at the beginning of the list """
 		node = doubly_node( key, value )
@@ -130,7 +140,7 @@ class doubly_linked_list( object ):
 			self._length -= 1
 		else:
 			self._tail = self._tail.prev
-			self._tail.next = None
+			#self._tail.next = None
 			self._length -= 1
 		return True
 		
@@ -174,37 +184,53 @@ class doubly_linked_list( object ):
 				
 		return False
 
-
-class hashtable( object ):
+from math import floor
+class HashTable( object ):
 	""" Implementation of hashtable in python """
 	
-	def __init__( self, size = 11 ):
-		self.storage = size * [doubly_linked_list()]
-		self._size = 0
+	def __init__( self ):
+		self._storage = []
+		self._num_keys = 0
+		self._table_size = 11
+		
+		for i in range( self._table_size ):
+			self._storage.append(doubly_linked_list())
 		
 	def hash_function( self, key ):
 		""" Using division method """
-		prime = 11
-		return key % prime
+		return key % self._table_size
+		
+	def hash_function2( self, key ):
+		""" Using Multiplication Method """
+		return floor( self._table_size * ( (0.61803 * key) % 1 ) )
 		
 	def insert( self, key, value ):
 		""" Inserts the given key in the table """
 		bucket = self.hash_function( key )
-		self.storage[bucket].insert_at_beginning( key, value )
-		self._size += 1
+		self._storage[bucket].insert_at_beginning( key, value )
+		self._num_keys += 1
 		return True
 		
 	def search( self, key ):
 		""" searches the value of the given key """
 		bucket = self.hash_function( key )
-		return self.storage[bucket].get_node_value( key )
+		return self._storage[bucket].get_node_value( key )
+		
+	def keys( self ):
+		""" Returns the list of all the keys in the hashtable """
+		keys = []
+		for i in range( self._table_size ):
+			key = self._storage[i].get_keys()
+			keys += key 
+			
+		return keys
 		
 	def delete( self, key ):
 		bucket = self.hash_function( key )
 		count = 0
 		print( key )
-		if self.storage[bucket].delete_node( key ):
-			self._size -= 1
+		if self._storage[bucket].delete_node( key ):
+			self._num_keys -= 1
 			count += 1
 			print( count )
 		else:
@@ -213,10 +239,61 @@ class hashtable( object ):
 				
 		
 	def size( self ):
-		return self._size
+		return self._num_keys
 		
+
+class ImprovedHashTable( HashTable ):
+	"""
+		An improved version of the hash table. Uses Table Doubling technique.
+	"""
+	
+	def __init__( self ):
+		super().__init__()
+	
 		
-## String Matching algorithms
+	def resize( self, param ):
+		""" 
+			Shrinks or extends the size of hashtable depending on the param
+		"""
+		keys = self.keys()
+		if param == "shrink":
+			new_table_size = self._table_size // 2
+		elif param == "extend":
+			new_table_size = self._table_size * 2
+		else:
+			return False
+		
+		# initialize new storage
+		new_storage = []
+		
+		for i in range( new_table_size ):
+			new_storage.append(doubly_linked_list())
+		
+		# rehash keys and values and enter data into the new storage
+		for key in keys:
+			val = self.search( key )
+			bucket = key % new_table_size
+			new_storage[bucket].insert_at_beginning( key, val )
+		
+		# set new table size and storage
+		self._table_size = new_table_size
+		self._storage = new_storage
+		return new_storage
+		
+	def insert( self, key, value ):
+		""" Modified to extend the size of table if number of keys increases """
+		if 2 * self._table_size < self._num_keys:
+			self.resize( "extend" )
+		
+		super().insert( key, value )
+		
+	def delete( self, key ):
+		if self._table_size // 3 > self._num_keys:
+			self.resize( "shrink" )
+			
+		super().delete( key )
+		
+""" String Matching algorithms """
 
 def naive_substring_match( sub, string ):
 	""" Matches the substring sub in the given string """
@@ -292,3 +369,81 @@ def Karp_Rabin_Algorithm2( sub, string ):
 		
 	return False
 		
+		
+		
+""" Open Addressing """
+class OpenAddressingTable( object ):
+	""" A hashtable using open addressing """
+	
+	def __init__( self ):
+		self._table_size = 53
+		self._num_keys = 0
+		self._storage = [None for i in range( self._table_size )]
+		
+	def auxiliary_hash_function1( self, key ):
+		""" Hashes the key and returns the location to store key """
+		return key % self._table_size
+		
+	def auxiliary_hash_function2( self, key ):
+		""" Hashes the key and returns the location to store key """
+		return 1 + key % ( self._table_size - 1 )	# of the form -> 1 + k mod m'
+		
+	def linear_probing( self, key, i ):
+		""" Uses the method of linear probling for hashing -> (h1(k) + i) mod m """
+		return (self.auxiliary_hash_function1( key ) + i) % self._table_size 
+		
+	def quadratic_probing( self, key, i ):
+		""" Uses the method of quadratic probing for hashing -> (h1(k) + i*c1 + i^2*c2) """
+		c1, c2 = (1,3)
+		return ( auxiliary_hash_function1( key ) + i * c1 + i**2 * c2 ) % self._table_size
+		
+	def double_hashing( self, key, i ):
+		""" Uses double hashing technique to store key """
+		h1 = self.auxiliary_hash_function1( key )
+		h2 = self.auxiliary_hash_function2( key )
+		return ( h1 + i * h2 ) % self._table_size  # of the form -> (h1 + i*h2) mod m
+		
+	def insert( self, key ):
+		""" Inserts the given in the hashtable using linear probing """
+		i = 0
+		while i < self._table_size:
+			bucket = self.double_hashing( key, i )
+			if self._storage[bucket] is None or self._storage[bucket] == "Delete":
+				self._storage[bucket] = key
+				return bucket
+			else:
+				i += 1
+		return False
+		
+	def search( self, key ):
+		""" 
+			Searches the given key in the hashtable.
+			Returns the location of key if it exists, False otherwise
+		"""
+		i = 0
+		while i < self._table_size:
+			bucket = self.double_hashing( key, i )
+			if self._storage[bucket] == key:
+				return bucket
+			elif self._storage[bucket] is None:
+				return False
+			i += 1
+		return False
+		
+	def delete( self, key ):
+	""" 
+		Deletes the given key if exists in the table.
+		Returns the position of the key if exists, False otherwise
+	"""
+		i = 0
+		while i < self._table_size:
+			bucket = self.double_hashing( key, i )
+			if self._storage[bucket] == key:
+				item = key
+				self._storage[bucket] = "Delete"	# Using Delete as a flag
+				return bucket
+			elif self._storage[bucket] is None:
+				return False
+			else:
+				i += 1
+		return False
