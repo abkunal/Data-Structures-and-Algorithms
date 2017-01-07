@@ -145,6 +145,30 @@ def TreeDelete( T, z ):
 		y.left.parent = y
 
 
+def lowest_common_ancestor( x, y ):
+	""" Find the lowest common ancestor of x and y in a tree """
+	p1 = [x]	# contains parents of x including x
+	p2 = [y]	# contains parents of y including y
+	
+	node1, node2 = x, y
+	# find all the ancestors of x
+	while node1.parent is not None:
+		p1.append( node1.parent )
+		node1 = node1.parent
+	# find all the ancestors of y
+	while node2.parent is not None:
+		p2.append( node2.parent )
+		node2 = node2.parent
+
+	LCA = None
+	while p1 and p2:	# while p1 and p2 are not empty
+		a = p1.pop()
+		b = p2.pop()
+		if a == b:		# if nodes are same update lowest common ancestor
+			LCA = a
+		else:
+			break		
+	return LCA
 
 
 node1 = Node( 10 )
