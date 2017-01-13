@@ -131,11 +131,11 @@ class TestBruteforceAlgorithm(unittest.TestCase):
         -7,12,-5,-22,15,-4,7]), (7, 10, 43))
 
     def test_randomly_using_find_max_subarray(self):
-        for i in range(1000):
-            array = [random.randint(-500000000, 500000000) for j in range(10000)]
-            bruteforce_data = bruteforce_algorithm(array)
-            find_max_data = find_max_subarray(array, 0, 9999)
-            self.assertEqual(bruteforce_data, find_max_data)
+        #for i in range(1000):
+        array = [random.randint(-500000000, 500000000) for j in range(10000)]
+        bruteforce_data = bruteforce_algorithm(array)
+        find_max_data = find_max_subarray(array, 0, 9999)
+        self.assertEqual(bruteforce_data, find_max_data)
 
     def test_randomly_using_linear_algo(self):
         array = [random.randint(-10000000000, 10000000000) for i in range(10000)]
@@ -175,6 +175,29 @@ class TestFindMaxAlgorithm(unittest.TestCase):
         find_max_data = find_max_subarray(array, 0, 9999)
         linear_data = linear_time_algorithm(array)
         self.assertEqual(find_max_data, linear_data)
+
+
+class TestLinearAlgorithm(unittest.TestCase):
+    """ Test Cases for linear_time_algorithm """
+    def test_empty_array(self):
+        self.assertEqual(linear_time_algorithm([]), (None, None, 0))
+
+    def test_one_element_array(self):
+        self.assertEqual(linear_time_algorithm([12312]), (0,0,12312))
+
+    def test_two_element_algorithm(self):
+        self.assertEqual(linear_time_algorithm([23423,-2342]), (0,0, 23423))
+        self.assertEqual(linear_time_algorithm([-32423, -676]), (1,1,-676))
+        self.assertEqual(linear_time_algorith,([547668,4657543]), (0, 1, 5205211))
+
+    def test_eight_element_array(self):
+        self.assertEqual(find_max_subarray([20,-10,30,40,-80,90,5,-4]), (5, 6, 95))
+
+    def test_16_element_array(self):
+        self.assertEqual(find_max_subarray([13,-3,-25,20,-3,-16,-23,18,20,
+        -7,12,-5,-22,15,-4,7]), (7, 10, 43))
+
+
 
 if __name__ == '__main__':
     unittest.main()
