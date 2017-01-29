@@ -1,4 +1,15 @@
-""" Some Recursive problems """
+""" 
+    Some Recursive problems:
+
+    1. Permutations
+    2. Subsets
+    3. Sudoku Solver (Visual)
+    4. N-Queens (Visual)
+    5. Fractals (Visual)
+"""
+
+
+
 
 from graphics import *
 import time
