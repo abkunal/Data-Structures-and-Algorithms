@@ -30,9 +30,9 @@ def lps(s):
             l += 1
             r += 1
 
-    print("Length of LPS: ", L[0][length-1])
+    print("Length of LPS: ", L[0][-1])
     
-    return L[0][length-1]
+    return L[0][-1]
 
 
 class TestLPS(unittest.TestCase):
