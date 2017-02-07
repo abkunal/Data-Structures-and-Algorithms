@@ -1,4 +1,4 @@
-""" Longest Common Subsequence problem using Dynamic Programming """
+""" Longest Common Substring problem using Dynamic Programming """
 
 import unittest
 
@@ -6,7 +6,7 @@ import unittest
 def lis(A):
     """
         A: a list of integers
-        Find the longest increasing subsequence in A.
+        Find the longest increasing substring in A.
         Returns a tuple (start,end), start -> starting index, b -> ending index
     """
     # Trivial case
@@ -36,7 +36,7 @@ def lis(A):
 
 
 class Testlis(unittest.TestCase):
-    """ Test Cases for longest increasing subsequence """
+    """ Test Cases for longest increasing substring """
 
     def test_empty_array(self):
         self.assertEqual(lis([]), None)
