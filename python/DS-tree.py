@@ -1,95 +1,95 @@
 """ Implementation of a Binary Tree """
 
-class Node( object ):
+class Node(object):
 	""" A node contains some information """
 	
-	def __init__( self, value ):
+	def __init__(self, value):
 		self.value = value
 		self.parent = None
 		self.left = None
 		self.right = None
 
 
-def inorder( root ):
+def inorder(root):
 	""" Prints the inorder traversal of a tree """
 	if root != None:
-		inorder( root.left )
-		print( root.value, end=" " )
-		inorder( root.right )
+		inorder(root.left)
+		print(root.value, end=" ")
+		inorder(root.right)
 
-def preorder( root ):
+def preorder(root):
 	""" Prints the preorder traversal of a tree """
 	if root != None:
-		print( root.value, end=" " )
-		preorder( root.left )
-		preorder( root.right )
+		print(root.value, end=" ")
+		preorder(root.left)
+		preorder(root.right)
 
-def postorder( root ):
+def postorder(root):
 	""" Prints the postorder traversal of a tree """
 	if root != None:
-		postorder( root.left )
-		postorder( root.right )
-		print( root.value, end=" " )
+		postorder(root.left)
+		postorder(root.right)
+		print(root.value, end=" ")
 		
 
 
-class BinarySearchTree( object ):
+class BinarySearchTree(object):
 	""" 
 		Binary search tree is a binary tree in which each node > left child and 
 		<= right child
 	"""
-	def __init__( self ):
+	def __init__(self):
 		self.root = None
 		self.length = 0
 	
-	def length( self ):
+	def length(self):
 		return self._length
 
 
-def TreeSearch( x, key ):
+def TreeSearch(x, key):
 	""" Search the given node in a Binary Search Tree """
 	if x is None or key == x.value:
 		return x
 	elif x.value < key:
-		return TreeSearch( x.right, key )
+		return TreeSearch(x.right, key)
 	else:
-		return TreeSearch( x.left, key )
+		return TreeSearch(x.left, key)
 
-def TreeMinimum( x ):
+def TreeMinimum(x):
 	""" Finds the minimum element in a binary search tree """
 	while x.left is not None:
 		x = x.left
 	return x
 	
-def TreeMaximum( x ):
+def TreeMaximum(x):
 	""" Finds the maximum element in a binary search tree """
 	while x.right is not None:
 		x = x.right
 	return x
 	
-def TreeSuccessor( x ):
+def TreeSuccessor(x):
 	""" Finds the successor of x in a binary Search Tree """
 	if x.right is not None:
-		return TreeMinimum( x )
+		return TreeMinimum(x)
 	
 	y = x.parent
-	while ( y is not None and x == y.right ):
+	while (y is not None and x == y.right):
 		x = y
 		y = y.parent
 	return y
 	
-def TreePredecessor( x ):
+def TreePredecessor(x):
 	""" Find the predecessor of x in a binary search tree """
 	if x.left is not None:
-		return TreeMaximum( x )
+		return TreeMaximum(x)
 		
 	y = x.parent
-	while ( y is not None and x == y.right ):
+	while (y is not None and x == y.right):
 		x = y
 		y = y.parent
 	return y
 
-def TreeInsert( T, z ):
+def TreeInsert(T, z):
 	""" Inserts node x in a binary search tree T """
 	y = None
 	x = T.root
@@ -108,7 +108,7 @@ def TreeInsert( T, z ):
 		y.left = z 
 	else: y.right = z 
 
-def Transplant( T, u, v ):
+def Transplant(T, u, v):
 	""" Replaces node v with node u """
 	if u.parent is None:
 		T.root = v 
@@ -120,32 +120,32 @@ def Transplant( T, u, v ):
 	if v is not None:
 		v.parent =  u.parent
 
-def TreeDelete( T, z ):
+def TreeDelete(T, z):
 	""" Deletes a node z from a BST T """
 	# if left subtree of z is empty replace z with its right child
 	if z.left is None:
-		Transplant( T, z, z.right )
+		Transplant(T, z, z.right)
 	# if right subtree of z is empty replace z with its left child
 	elif z.right is None:
-		Transplant( T, z, z.left )
+		Transplant(T, z, z.left)
 	else:
 		# find the successor
-		y = TreeMinimum( z.right )
+		y = TreeMinimum(z.right)
 		# if its not the right child of z
 		if y.parent != z:
 			# replace y with its right child, y has no left child being successor
-			Transplant( T, y, y.right )
+			Transplant(T, y, y.right)
 			# connect y with the right subtree z
 			y.right = z.right 
 			y.right.parent =  y
 		# replace z with y
-		Transplant( T, z, y )
+		Transplant(T, z, y)
 		# connect y with the left subtree of z
 		y.left = z.left 
 		y.left.parent = y
 
 
-def lowest_common_ancestor( x, y ):
+def lowest_common_ancestor(x, y):
 	""" Find the lowest common ancestor of x and y in a tree """
 	p1 = [x]	# contains parents of x including x
 	p2 = [y]	# contains parents of y including y
@@ -153,11 +153,11 @@ def lowest_common_ancestor( x, y ):
 	node1, node2 = x, y
 	# find all the ancestors of x
 	while node1.parent is not None:
-		p1.append( node1.parent )
+		p1.append(node1.parent)
 		node1 = node1.parent
 	# find all the ancestors of y
 	while node2.parent is not None:
-		p2.append( node2.parent )
+		p2.append(node2.parent)
 		node2 = node2.parent
 
 	LCA = None
@@ -171,12 +171,12 @@ def lowest_common_ancestor( x, y ):
 	return LCA
 
 
-node1 = Node( 10 )
-node2 = Node( 5 )
-node3 = Node( 2 )
-node4 = Node( 8 )
-node5 = Node( 20 )
-node6 = Node( 15 )
+node1 = Node(10)
+node2 = Node(5)
+node3 = Node(2)
+node4 = Node(8)
+node5 = Node(20)
+node6 = Node(15)
 node1.left = node2 
 node1.right = node5 
 node2.parent = node1 
@@ -188,14 +188,14 @@ node5.parent = node1
 node5.left = node6 
 node6.parent = node5 
 
-print( "Inorder: ", end=" " )
-inorder( node1 )
+print("Inorder: ", end=" ")
+inorder(node1)
 print()
-print( "Preorder: ", end=" " )
-preorder( node1 )
+print("Preorder: ", end=" ")
+preorder(node1)
 print()
-print( "Postorder: ", end=" " )
-postorder( node1 )
+print("Postorder: ", end=" ")
+postorder(node1)
 print()
 	
 
