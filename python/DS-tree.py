@@ -255,3 +255,22 @@ T.root = one
 print("Maximum Height: ", maxi_height(T))
 
 print("Maximum Depth: ", max_depth_simplified(one))
+## =============================================================================
+
+def maximum_height_iteratively(node):
+    if node is None:
+        return 0
+    
+    max_height = 1
+    stack = [(node, 1)]
+    while stack:
+        a = stack.pop()
+        if a[0].left is not None:
+            stack.append((a[0].left, a[1]+1))
+        if a[0].right is not None:
+            stack.append((a[0].right, a[1]+1))
+        if a[1] > max_height:
+            max_height = a[1]
+    return max_height
+
+print("Maximum Height: ", maximum_height_iteratively(one))
