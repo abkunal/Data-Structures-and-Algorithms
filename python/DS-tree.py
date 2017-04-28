@@ -198,4 +198,60 @@ print("Postorder: ", end=" ")
 postorder(node1)
 print()
 	
+## =============================================================================
+# Maximum Height or depth in a tree
+def dfs_visit(node, visited, level, i):
+    if node.left is not None:
+        visited.add(node.left)
+        #level[node.left.value] = i+1
+        level.add(i+1)
+        dfs_visit(node.left, visited, level, i+1)
+    if node.right is not None:
+        visited.add(node.right)
+        #level[node.right.value] = i+1
+        level.add(i+1)
+        dfs_visit(node.right, visited, level, i+1)
 
+def maxi_height(T):
+    """ Returns the maximum height of the given tree """
+    visited = set([T.root])
+    if T.root is None:
+        return 0
+    #level = {T.root.value: 0}
+    level = set([1])
+    dfs_visit(T.root, visited, level, 1)
+    return max(level)
+
+def max_depth_simplified(node):
+    """ Returns the maximum depth of the tree """
+    # Base case
+    if node is None:
+        return 0
+    # recurse on the left subtree
+    left = max_depth_simplified(node.left)
+    # recurse on the right subtree
+    right = max_depth_simplified(node.right)
+    
+    return max(left, right) + 1
+
+T = BinarySearchTree()
+T.root = node1
+maxi_height(T)
+## =============================================================================
+
+## Another Example
+one = Node(1)
+two = Node(2)
+three = Node(3)
+four = Node(4)
+five = Node(5)
+
+one.right = three
+one.left = two
+two.left = four
+two.right = five
+T = BinarySearchTree()
+T.root = one
+print("Maximum Height: ", maxi_height(T))
+
+print("Maximum Depth: ", max_depth_simplified(one))
