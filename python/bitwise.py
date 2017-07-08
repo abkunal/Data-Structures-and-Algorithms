@@ -40,6 +40,14 @@ def count_diff_bits(x, y):
             count += 1
     return count
 
+def count_diff_bits2(x, y):
+    z = x ^ y
+    count = 0
+    while z:
+        count += 1
+        z = z & (z-1)
+    return count
+
 
 class TestBitwise(unittest.TestCase):    
     """ Test the above bitwise operations """
@@ -145,6 +153,15 @@ class TestBitwise(unittest.TestCase):
         assert count_diff_bits(0b1010, 0b1100) == 2
         assert count_diff_bits(0b0000000, 0b000000) == 0
        
+    def test_count_diff_bits2(self):
+        """ Tests for count_diff_bits function """
+        assert count_diff_bits2(0b1111111, 0b1111111) == 0
+        assert count_diff_bits2(0b1010101, 0b1010100) == 1
+        assert count_diff_bits2(0b0000000, 0b1111111) == 7
+        assert count_diff_bits2(0b111000111, 0b111100001111) == 6
+        assert count_diff_bits2(0b100110101, 0b101111010) == 5
+        assert count_diff_bits2(0b1010, 0b1100) == 2
+        assert count_diff_bits2(0b0000000, 0b000000) == 0
 
 if __name__ == '__main__':
     unittest.main()
