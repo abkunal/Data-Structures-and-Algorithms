@@ -35,12 +35,15 @@ class Solution(object):
         odd = 0
         k = None
 
+        # take all the characters occuring even number of times and the maximum odd
         for key in c:
             if c[key] % 2 == 0:
                 evens += c[key]
             elif c[key] > odd:
                 odd = c[key]
                 k = key
+        # take all the chars occuring odd number of times except the maximum one,
+        # subtract one from them (to convert odd to even and add them)
         for key in c:
             if key != k and c[key] % 2 == 1:
                 evens += c[key] - 1
