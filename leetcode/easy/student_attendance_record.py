@@ -29,13 +29,4 @@ class Solution(object):
         :type s: str
         :rtype: bool
         """
-        l = 0
-        maxi = 0
-        for c in s:
-            if c == "L":
-                l += 1
-                if l > maxi:
-                    maxi = l
-            else:
-                l = 0
-        return maxi <= 2 and s.count("A") < 2
+        return s.find("LLL") == -1 and s.count("A") < 2
