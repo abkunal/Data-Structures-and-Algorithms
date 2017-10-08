@@ -52,6 +52,17 @@ class Solution(object):
 
         return head
 
+    def swapPairs2(self, head):
+        """ An amazing value replacing solution by a fellow coder. Loved it! """
+        cur = head
+        while cur is not None and cur.next is not None:
+            cur_val = cur.val
+            cur.val = cur.next.val
+            cur.next.val =cur_val
+            cur = cur.next
+            cur = cur.next
+        return head
+
     def print_list(self, head):
         cur = head
         while cur is not None:
@@ -73,4 +84,4 @@ class Solution(object):
 # l4.next = l5
 # l5.next = l6
 # a.print_list(l1)
-# a.print_list(a.swapPairs(None))
+# a.print_list(a.swapPairs2(l1))
