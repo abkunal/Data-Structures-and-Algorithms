@@ -53,6 +53,21 @@ class Tree {
       this.preorderHelper(node.right);
     }
   }
+
+  /**
+   * Print the inorder traversal of the tree
+   */
+  printInorderTraversal() {
+    this.inorderHelper(this.root);
+  }
+
+  inorderHelper(node) {
+    if (node !== undefined) {
+      console.log(node.value);
+      this.inorderHelper(node.left);
+      this.inorderHelper(node.right);
+    }
+  }
 }
 
 let tree = new Tree();
@@ -70,4 +85,5 @@ node2.setRightChild(node5);
 node3.setLeftChild(node6);
 tree.setRoot(node1);
 
-tree.printPreorderTraversal();
+// tree.printPreorderTraversal();
+tree.printInorderTraversal();
