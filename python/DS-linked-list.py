@@ -1,4 +1,7 @@
-""" Implementation of linked list """
+""" 
+  Implementation of singly linked list and doubly linked list in python with 
+  all the necessary operations performed on linked list
+"""
 
 class Node( object ):
 	""" A Node for singly linked list """
